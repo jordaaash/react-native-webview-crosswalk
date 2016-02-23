@@ -1,6 +1,3 @@
-/**
- * @providesModule CrosswalkWebView
- */
 'use strict';
 
 import React, { requireNativeComponent, PropTypes, View } from 'react-native';
