@@ -19,7 +19,7 @@ public class RNCrosswalkWebViewManager extends ViewGroupManager<RNCrosswalkWebVi
     public static final int RELOAD = 3;
 
     @VisibleForTesting
-    public static final String REACT_CLASS = "RNCrosswalkWebViewAndroid";
+    public static final String REACT_CLASS = "RNCrosswalkWebView";
 
     Activity mActivity;
 
