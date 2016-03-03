@@ -1,14 +1,13 @@
 'use strict';
 
 import React, { requireNativeComponent, PropTypes, View } from 'react-native';
-var { NativeModules: { UIManager, CrosswalkWebViewManager: { JSNavigationScheme } } } = React;
+var { addons: { PureRenderMixin }, NativeModules: { UIManager, CrosswalkWebViewManager: { JSNavigationScheme } } } = React;
 
 var WEBVIEW_REF = 'crosswalkWebView';
 
 var CrosswalkWebView = React.createClass({
-    statics:   {
-        JSNavigationScheme
-    },
+    mixins:    [PureRenderMixin],
+    statics:   { JSNavigationScheme },
     propTypes: {
         localhost:               PropTypes.bool.isRequired,
         onNavigationStateChange: PropTypes.func,
