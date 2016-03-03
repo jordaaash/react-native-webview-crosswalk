@@ -14,10 +14,10 @@ import java.util.List;
 
 public class CrosswalkWebViewPackage implements ReactPackage {
 
-    Activity mActivity;
+    private Activity activity;
 
-    public CrosswalkWebViewPackage (Activity activity) {
-        mActivity = activity;
+    public CrosswalkWebViewPackage (Activity _activity) {
+        activity = _activity;
     }
 
     @Override
@@ -34,6 +34,6 @@ public class CrosswalkWebViewPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers (ReactApplicationContext reactContext) {
-        return Arrays.<ViewManager>asList(new CrosswalkWebViewGroupManager(mActivity));
+        return Arrays.<ViewManager>asList(new CrosswalkWebViewGroupManager(activity));
     }
 }

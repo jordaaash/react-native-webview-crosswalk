@@ -6,13 +6,19 @@ var { NativeModules: { UIManager, CrosswalkWebViewManager: { JSNavigationScheme 
 var WEBVIEW_REF = 'crosswalkWebView';
 
 var CrosswalkWebView = React.createClass({
-    statics: {
+    statics:   {
         JSNavigationScheme
     },
     propTypes: {
+        localhost:               PropTypes.bool.isRequired,
         onNavigationStateChange: PropTypes.func,
         url:                     PropTypes.string,
         ...View.propTypes
+    },
+    getDefaultProps () {
+        return {
+            localhost: false
+        };
     },
     render () {
         return (

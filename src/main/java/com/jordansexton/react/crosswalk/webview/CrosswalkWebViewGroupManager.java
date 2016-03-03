@@ -24,10 +24,10 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
     @VisibleForTesting
     public static final String REACT_CLASS = "CrosswalkWebView";
 
-    Activity mActivity;
+    private Activity activity;
 
-    public CrosswalkWebViewGroupManager (Activity activity) {
-        mActivity = activity;
+    public CrosswalkWebViewGroupManager (Activity _activity) {
+        activity = _activity;
     }
 
     @Override
@@ -37,17 +37,22 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
 
     @Override
     public CrosswalkWebView createViewInstance (ThemedReactContext context) {
-        return new CrosswalkWebView(context, mActivity);
+        return new CrosswalkWebView(context, activity);
     }
 
     @ReactProp(name = "url")
     public void setUrl (final CrosswalkWebView view, @Nullable final String url) {
-        mActivity.runOnUiThread(new Runnable() {
+        activity.runOnUiThread(new Runnable() {
             @Override
             public void run () {
                 view.load(url, null);
             }
         });
+    }
+
+    @ReactProp(name = "localhost")
+    public void setLocalhost (CrosswalkWebView view, Boolean localhost) {
+        view.setLocalhost(localhost);
     }
 
     @Override

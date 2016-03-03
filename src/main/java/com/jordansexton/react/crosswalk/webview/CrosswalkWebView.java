@@ -13,32 +13,50 @@ import org.xwalk.core.XWalkView;
 
 class CrosswalkWebView extends XWalkView {
 
-    private final Activity mActivity;
+    private final Activity activity;
 
-    private final EventDispatcher mEventDispatcher;
+    private final EventDispatcher eventDispatcher;
 
-    private final ResourceClient mResourceClient;
+    private final ResourceClient resourceClient;
 
-    public CrosswalkWebView (ReactContext reactContext, Activity activity) {
-        super(reactContext, activity);
+    public CrosswalkWebView (ReactContext reactContext, Activity _activity) {
+        super(reactContext, _activity);
 
-        mActivity = activity;
-        mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-        mResourceClient = new ResourceClient(this);
+        activity = _activity;
+        eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        resourceClient = new ResourceClient(this);
 
-        this.setResourceClient(mResourceClient);
+        this.setResourceClient(resourceClient);
+    }
+
+    public Boolean getLocalhost () {
+        return resourceClient.getLocalhost();
+    }
+
+    public void setLocalhost (Boolean localhost) {
+        resourceClient.setLocalhost(localhost);
     }
 
     protected class ResourceClient extends XWalkResourceClient {
+
+        private Boolean localhost = false;
 
         ResourceClient (XWalkView view) {
             super(view);
         }
 
+        public Boolean getLocalhost () {
+            return localhost;
+        }
+
+        public void setLocalhost (Boolean _localhost) {
+            localhost = _localhost;
+        }
+
         @Override
         public void onLoadFinished (XWalkView view, String url) {
             XWalkNavigationHistory navigationHistory = view.getNavigationHistory();
-            mEventDispatcher.dispatchEvent(
+            eventDispatcher.dispatchEvent(
                 new NavigationStateChangeEvent(
                     getId(),
                     SystemClock.uptimeMillis(),
@@ -55,7 +73,7 @@ class CrosswalkWebView extends XWalkView {
         @Override
         public void onLoadStarted (XWalkView view, String url) {
             XWalkNavigationHistory navigationHistory = view.getNavigationHistory();
-            mEventDispatcher.dispatchEvent(
+            eventDispatcher.dispatchEvent(
                 new NavigationStateChangeEvent(
                     getId(),
                     SystemClock.uptimeMillis(),
@@ -75,14 +93,27 @@ class CrosswalkWebView extends XWalkView {
                 onLoadFinished(view, url);
                 return true;
             }
-            else if (uri.getHost().equals("localhost")) {
+            else if (getLocalhost()) {
+                if (uri.getHost().equals("localhost")) {
+                    return false;
+                }
+                else {
+                    overrideUri(uri);
+                    return true;
+                }
+            }
+            else if (uri.getScheme().equals("http") || uri.getScheme().equals("https")) {
                 return false;
             }
             else {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, uri);
-                mActivity.startActivity(browserIntent);
+                overrideUri(uri);
                 return true;
             }
+        }
+
+        private void overrideUri (Uri uri) {
+            Intent action = new Intent(Intent.ACTION_VIEW, uri);
+            activity.startActivity(action);
         }
     }
 }

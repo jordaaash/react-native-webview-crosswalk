@@ -9,24 +9,24 @@ class NavigationStateChangeEvent extends Event<NavigationStateChangeEvent> {
 
     public static final String EVENT_NAME = "navigationStateChange";
 
-    private final String mTitle;
+    private final String title;
 
-    private final boolean mIsLoading;
+    private final boolean isLoading;
 
-    private final String mUrl;
+    private final String url;
 
-    private final boolean mCanGoBack;
+    private final boolean canGoBack;
 
-    private final boolean mCanGoForward;
+    private final boolean canGoForward;
 
-    protected NavigationStateChangeEvent (int viewTag, long timestampMs, String title, boolean isLoading, String url, boolean canGoBack, boolean canGoForward) {
+    protected NavigationStateChangeEvent (int viewTag, long timestampMs, String _title, boolean _isLoading, String _url, boolean _canGoBack, boolean _canGoForward) {
         super(viewTag, timestampMs);
 
-        mTitle = title;
-        mIsLoading = isLoading;
-        mUrl = url;
-        mCanGoBack = canGoBack;
-        mCanGoForward = canGoForward;
+        title = _title;
+        isLoading = _isLoading;
+        url = _url;
+        canGoBack = _canGoBack;
+        canGoForward = _canGoForward;
     }
 
     @Override
@@ -41,11 +41,11 @@ class NavigationStateChangeEvent extends Event<NavigationStateChangeEvent> {
 
     private WritableMap serializeEventData () {
         WritableMap eventData = Arguments.createMap();
-        eventData.putString("title", mTitle);
-        eventData.putBoolean("loading", mIsLoading);
-        eventData.putString("url", mUrl);
-        eventData.putBoolean("canGoBack", mCanGoBack);
-        eventData.putBoolean("canGoForward", mCanGoForward);
+        eventData.putString("title", title);
+        eventData.putBoolean("loading", isLoading);
+        eventData.putString("url", url);
+        eventData.putBoolean("canGoBack", canGoBack);
+        eventData.putBoolean("canGoForward", canGoForward);
 
         return eventData;
     }
