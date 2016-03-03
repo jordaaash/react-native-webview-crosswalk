@@ -11,8 +11,26 @@ import org.xwalk.core.XWalkNavigationHistory;
 import org.xwalk.core.XWalkResourceClient;
 import org.xwalk.core.XWalkView;
 
-class RNCrosswalkWebView extends XWalkView {
+class CrosswalkWebView extends XWalkView {
+
+    private final Activity mActivity;
+
+    private final EventDispatcher mEventDispatcher;
+
+    private final ResourceClient mResourceClient;
+
+    public CrosswalkWebView (ReactContext reactContext, Activity activity) {
+        super(reactContext, activity);
+
+        mActivity = activity;
+        mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
+        mResourceClient = new ResourceClient(this);
+
+        this.setResourceClient(mResourceClient);
+    }
+
     protected class ResourceClient extends XWalkResourceClient {
+
         ResourceClient (XWalkView view) {
             super(view);
         }
@@ -53,7 +71,11 @@ class RNCrosswalkWebView extends XWalkView {
         @Override
         public boolean shouldOverrideUrlLoading (XWalkView view, String url) {
             Uri uri = Uri.parse(url);
-            if (uri.getHost().equals("localhost")) {
+            if (uri.getScheme().equals(CrosswalkWebViewManager.JSNavigationScheme)) {
+                onLoadFinished(view, url);
+                return true;
+            }
+            else if (uri.getHost().equals("localhost")) {
                 return false;
             }
             else {
@@ -62,19 +84,5 @@ class RNCrosswalkWebView extends XWalkView {
                 return true;
             }
         }
-    }
-
-    private final Activity mActivity;
-    private final EventDispatcher mEventDispatcher;
-    private final ResourceClient mResourceClient;
-
-    public RNCrosswalkWebView (ReactContext reactContext, Activity activity) {
-        super(reactContext, activity);
-
-        mActivity = activity;
-        mEventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
-        mResourceClient = new ResourceClient(this);
-
-        this.setResourceClient(mResourceClient);
     }
 }

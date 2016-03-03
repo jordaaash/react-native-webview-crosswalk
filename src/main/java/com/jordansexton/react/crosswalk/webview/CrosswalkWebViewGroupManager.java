@@ -13,17 +13,20 @@ import org.xwalk.core.XWalkView;
 import javax.annotation.Nullable;
 import java.util.Map;
 
-public class RNCrosswalkWebViewManager extends ViewGroupManager<RNCrosswalkWebView> {
+public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebView> {
+
     public static final int GO_BACK = 1;
+
     public static final int GO_FORWARD = 2;
+
     public static final int RELOAD = 3;
 
     @VisibleForTesting
-    public static final String REACT_CLASS = "RNCrosswalkWebView";
+    public static final String REACT_CLASS = "CrosswalkWebView";
 
     Activity mActivity;
 
-    public RNCrosswalkWebViewManager (Activity activity) {
+    public CrosswalkWebViewGroupManager (Activity activity) {
         mActivity = activity;
     }
 
@@ -33,13 +36,13 @@ public class RNCrosswalkWebViewManager extends ViewGroupManager<RNCrosswalkWebVi
     }
 
     @Override
-    public RNCrosswalkWebView createViewInstance (ThemedReactContext context) {
-        return new RNCrosswalkWebView(context, mActivity);
+    public CrosswalkWebView createViewInstance (ThemedReactContext context) {
+        return new CrosswalkWebView(context, mActivity);
     }
 
     @ReactProp(name = "url")
-    public void setUrl (final RNCrosswalkWebView view, @Nullable final String url) {
-        mActivity.runOnUiThread(new Runnable () {
+    public void setUrl (final CrosswalkWebView view, @Nullable final String url) {
+        mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run () {
                 view.load(url, null);
@@ -52,14 +55,14 @@ public class RNCrosswalkWebViewManager extends ViewGroupManager<RNCrosswalkWebVi
     @Nullable
     Map<String, Integer> getCommandsMap () {
         return MapBuilder.of(
-                "goBack", GO_BACK,
-                "goForward", GO_FORWARD,
-                "reload", RELOAD
+            "goBack", GO_BACK,
+            "goForward", GO_FORWARD,
+            "reload", RELOAD
         );
     }
 
     @Override
-    public void receiveCommand (RNCrosswalkWebView view, int commandId, @Nullable ReadableArray args) {
+    public void receiveCommand (CrosswalkWebView view, int commandId, @Nullable ReadableArray args) {
         switch (commandId) {
             case GO_BACK:
                 view.getNavigationHistory().navigate(XWalkNavigationHistory.Direction.BACKWARD, 1);
@@ -76,7 +79,8 @@ public class RNCrosswalkWebViewManager extends ViewGroupManager<RNCrosswalkWebVi
     @Override
     public Map getExportedCustomDirectEventTypeConstants () {
         return MapBuilder.of(
-                NavigationStateChangeEvent.EVENT_NAME, MapBuilder.of("registrationName", "onNavigationStateChange")
+            NavigationStateChangeEvent.EVENT_NAME,
+            MapBuilder.of("registrationName", "onNavigationStateChange")
         );
     }
 }

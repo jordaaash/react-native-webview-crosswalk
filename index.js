@@ -1,11 +1,14 @@
 'use strict';
 
 import React, { requireNativeComponent, PropTypes, View } from 'react-native';
-var { NativeModules: { UIManager } } = React;
+var { NativeModules: { UIManager, CrosswalkWebViewManager: { JSNavigationScheme } } } = React;
 
 var WEBVIEW_REF = 'crosswalkWebView';
 
 var CrosswalkWebView = React.createClass({
+    statics: {
+        JSNavigationScheme
+    },
     propTypes: {
         onNavigationStateChange: PropTypes.func,
         url:                     PropTypes.string,
@@ -13,7 +16,7 @@ var CrosswalkWebView = React.createClass({
     },
     render () {
         return (
-            <RNCrosswalkWebView
+            <NativeCrosswalkWebView
                 { ...this.props }
                 onNavigationStateChange={ this.onNavigationStateChange }
                 ref={ WEBVIEW_REF }/>
@@ -31,26 +34,26 @@ var CrosswalkWebView = React.createClass({
     goBack () {
         UIManager.dispatchViewManagerCommand(
             this.getWebViewHandle(),
-            UIManager.RNCrosswalkWebView.Commands.goBack,
+            UIManager.NativeCrosswalkWebView.Commands.goBack,
             null
         );
     },
     goForward () {
         UIManager.dispatchViewManagerCommand(
             this.getWebViewHandle(),
-            UIManager.RNCrosswalkWebView.Commands.goForward,
+            UIManager.NativeCrosswalkWebView.Commands.goForward,
             null
         );
     },
     reload () {
         UIManager.dispatchViewManagerCommand(
             this.getWebViewHandle(),
-            UIManager.RNCrosswalkWebView.Commands.reload,
+            UIManager.NativeCrosswalkWebView.Commands.reload,
             null
         );
     }
 });
 
-var RNCrosswalkWebView = requireNativeComponent('RNCrosswalkWebView', CrosswalkWebView);
+var NativeCrosswalkWebView = requireNativeComponent('CrosswalkWebView', CrosswalkWebView);
 
 module.exports = CrosswalkWebView;
