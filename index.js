@@ -61,4 +61,4 @@ var CrosswalkWebView = React.createClass({
 
 var NativeCrosswalkWebView = requireNativeComponent('CrosswalkWebView', CrosswalkWebView);
 
-module.exports = CrosswalkWebView;
+export default CrosswalkWebView;
