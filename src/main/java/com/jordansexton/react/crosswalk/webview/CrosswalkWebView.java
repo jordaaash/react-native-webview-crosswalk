@@ -102,7 +102,7 @@ class CrosswalkWebView extends XWalkView {
                     return true;
                 }
             }
-            else if (uri.getScheme().equals("http") || uri.getScheme().equals("https")) {
+            else if (uri.getScheme().equals("http") || uri.getScheme().equals("https") || uri.getScheme().equals("file")) {
                 return false;
             }
             else {
