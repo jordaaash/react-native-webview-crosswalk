@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
+
+import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
@@ -11,7 +13,7 @@ import org.xwalk.core.XWalkNavigationHistory;
 import org.xwalk.core.XWalkResourceClient;
 import org.xwalk.core.XWalkView;
 
-class CrosswalkWebView extends XWalkView {
+class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
 
     private final Activity activity;
 
@@ -35,6 +37,23 @@ class CrosswalkWebView extends XWalkView {
 
     public void setLocalhost (Boolean localhost) {
         resourceClient.setLocalhost(localhost);
+    }
+
+    @Override
+    public void onHostResume() {
+        resumeTimers();
+        onShow();
+    }
+
+    @Override
+    public void onHostPause() {
+        pauseTimers();
+        onHide();
+    }
+
+    @Override
+    public void onHostDestroy() {
+        onDestroy();
     }
 
     protected class ResourceClient extends XWalkResourceClient {
