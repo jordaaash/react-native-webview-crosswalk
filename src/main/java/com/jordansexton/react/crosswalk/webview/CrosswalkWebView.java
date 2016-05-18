@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
-
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
@@ -20,6 +19,10 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
     private final EventDispatcher eventDispatcher;
 
     private final ResourceClient resourceClient;
+
+    private @Nullable String injectedJavaScript;
+
+    private boolean isJavaScriptInjected;
 
     public CrosswalkWebView (ReactContext reactContext, Activity _activity) {
         super(reactContext, _activity);
@@ -56,6 +59,25 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
         onDestroy();
     }
 
+    public void load (String url, String content) {
+        isJavaScriptInjected = false;
+        super.load(url, content);
+    }
+
+    public void setInjectedJavaScript(@Nullable String js) {
+        injectedJavaScript = js;
+    }
+
+    public void callInjectedJavaScript() {
+        if (!isJavaScriptInjected) {
+            isJavaScriptInjected = true;
+        }
+
+        if (injectedJavaScript != null && !injectedJavaScript.isEmpty()) {
+            this.evaluateJavascript(injectedJavaScript, null);
+        }
+    }
+
     protected class ResourceClient extends XWalkResourceClient {
 
         private Boolean localhost = false;
@@ -74,6 +96,8 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
 
         @Override
         public void onLoadFinished (XWalkView view, String url) {
+            ((CrosswalkWebView) view).callInjectedJavaScript();
+
             XWalkNavigationHistory navigationHistory = view.getNavigationHistory();
             eventDispatcher.dispatchEvent(
                 new NavigationStateChangeEvent(

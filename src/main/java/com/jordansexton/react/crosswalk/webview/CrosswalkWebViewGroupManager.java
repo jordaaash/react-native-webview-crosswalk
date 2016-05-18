@@ -42,6 +42,18 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
         return crosswalkWebView;
     }
 
+    @Override
+    public void onDropViewInstance(CrosswalkWebView view) {
+        super.onDropViewInstance(view);
+        ((ThemedReactContext) view.getContext()).removeLifecycleEventListener((CrosswalkWebView) view);
+        view.onDestroy();
+    }
+
+    @ReactProp(name = "injectedJavaScript")
+    public void setInjectedJavaScript (XWalkView view, @Nullable String injectedJavaScript) {
+        ((CrosswalkWebView) view).setInjectedJavaScript(injectedJavaScript);
+    }
+
     @ReactProp(name = "url")
     public void setUrl (final CrosswalkWebView view, @Nullable final String url) {
         activity.runOnUiThread(new Runnable() {
@@ -89,12 +101,5 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
             NavigationStateChangeEvent.EVENT_NAME,
             MapBuilder.of("registrationName", "onNavigationStateChange")
         );
-    }
-
-    @Override
-    public void onDropViewInstance(CrosswalkWebView view) {
-        super.onDropViewInstance(view);
-        ((ThemedReactContext) view.getContext()).removeLifecycleEventListener((CrosswalkWebView) view);
-        view.onDestroy();
     }
 }
