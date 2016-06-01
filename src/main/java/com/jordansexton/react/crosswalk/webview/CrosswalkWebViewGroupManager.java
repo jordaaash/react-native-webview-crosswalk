@@ -54,7 +54,12 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
             }
         });
     }
-	
+
+    @ReactProp(name = "injectedJavascript")
+    public void setInjectedJavaScript (final CrosswalkWebView view, @Nullable final String injectedJavaScript) {
+      view.setInjectedJavaScript(injectedJavaScript);
+    }
+
     @ReactProp(name = "source")
     public void setSource(final CrosswalkWebView view, @Nullable ReadableMap source) {
       if (source != null) {

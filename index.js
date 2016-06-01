@@ -18,6 +18,7 @@ var CrosswalkWebView = React.createClass({
     propTypes: {
         localhost:               PropTypes.bool.isRequired,
         onNavigationStateChange: PropTypes.func,
+        injectedJavascript:      PropTypes.string,
         url:                     PropTypes.string,
         source:                  PropTypes.oneOfType([
           PropTypes.shape({
@@ -59,6 +60,7 @@ var CrosswalkWebView = React.createClass({
                 source={ resolveAssetSource(source) }
                 testID={ this.props.testID }
                 localhost={ this.props.localhost }
+                injectedJavascript={ this.props.injectedJavascript }
                 onNavigationStateChange={ this.onNavigationStateChange } />
         );
     },
