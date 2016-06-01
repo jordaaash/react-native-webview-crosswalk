@@ -36,10 +36,15 @@ class CrosswalkWebView extends XWalkView {
     public void setLocalhost (Boolean localhost) {
         resourceClient.setLocalhost(localhost);
     }
+	
+    public void setInjectedJavaScript (String injectedJavascript) {
+        resourceClient.setInjectedJavaScript(injectedJavascript);
+    }
 
     protected class ResourceClient extends XWalkResourceClient {
 
         private Boolean localhost = false;
+        private String injectedJavascript = null;
 
         ResourceClient (XWalkView view) {
             super(view);
@@ -51,6 +56,10 @@ class CrosswalkWebView extends XWalkView {
 
         public void setLocalhost (Boolean _localhost) {
             localhost = _localhost;
+        }
+
+        public void setInjectedJavaScript (String _injectedJavascript) {
+            injectedJavascript = _injectedJavascript;
         }
 
         @Override
@@ -67,7 +76,9 @@ class CrosswalkWebView extends XWalkView {
                     navigationHistory.canGoForward()
                 )
             );
-
+            if (injectedJavascript != null) {
+              view.load("javascript:(function() {\n" + injectedJavascript + ";\n})();", null);
+            }
         }
 
         @Override
