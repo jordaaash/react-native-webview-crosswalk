@@ -40,6 +40,16 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
         return new CrosswalkWebView(context, activity);
     }
 
+    @ReactProp(name = "injectedJavascript")
+    public void setInjectedJavascript (final CrosswalkWebView view, @Nullable final String script) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run () {
+                view.evaluateJavascript(script, null);
+            }
+        });
+    }
+
     @ReactProp(name = "url")
     public void setUrl (final CrosswalkWebView view, @Nullable final String url) {
         activity.runOnUiThread(new Runnable() {
