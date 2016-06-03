@@ -3,9 +3,6 @@
     "version":          "0.0.9",
     "description":      "Crosswalk's WebView for React Native on Android",
     "main":             "index.js",
-    "scripts":          {
-        "postinstall": "./crosswalk.sh"
-    },
     "repository":       {
         "type": "git",
         "url":  "git+https://github.com/jordansexton/react-native-webview-crosswalk.git"
