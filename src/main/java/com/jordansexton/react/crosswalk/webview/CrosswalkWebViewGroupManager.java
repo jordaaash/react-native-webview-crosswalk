@@ -37,7 +37,9 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
 
     @Override
     public CrosswalkWebView createViewInstance (ThemedReactContext context) {
-        return new CrosswalkWebView(context, activity);
+        CrosswalkWebView crosswalkWebView = new CrosswalkWebView(context, activity);
+        context.addLifecycleEventListener(crosswalkWebView);
+        return crosswalkWebView;
     }
 
     @ReactProp(name = "url")
@@ -87,5 +89,12 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
             NavigationStateChangeEvent.EVENT_NAME,
             MapBuilder.of("registrationName", "onNavigationStateChange")
         );
+    }
+
+    @Override
+    public void onDropViewInstance(CrosswalkWebView view) {
+        super.onDropViewInstance(view);
+        ((ThemedReactContext) view.getContext()).removeLifecycleEventListener((CrosswalkWebView) view);
+        view.onDestroy();
     }
 }
