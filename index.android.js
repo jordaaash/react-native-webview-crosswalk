@@ -1,7 +1,12 @@
 'use strict';
 
-import React, { requireNativeComponent, PropTypes, View } from 'react-native';
-var { addons: { PureRenderMixin }, NativeModules: { UIManager, CrosswalkWebViewManager: { JSNavigationScheme } } } = React;
+import React, { PropTypes } from 'react';
+import ReactNative, { requireNativeComponent, View, StyleSheet } from 'react-native';
+
+var {
+    addons: { PureRenderMixin },
+    NativeModules: { UIManager, CrosswalkWebViewManager: { JSNavigationScheme } }
+} = ReactNative;
 
 var WEBVIEW_REF = 'crosswalkWebView';
 
