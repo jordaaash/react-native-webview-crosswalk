@@ -1,6 +1,6 @@
 {
     "name":             "react-native-webview-crosswalk",
-    "version":          "0.2.0",
+    "version":          "0.2.1",
     "description":      "Crosswalk's WebView for React Native on Android",
     "scripts":          {
         "postinstall": "./crosswalk.sh"
