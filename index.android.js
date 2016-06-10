@@ -17,6 +17,7 @@ var CrosswalkWebView = React.createClass({
         localhost:               PropTypes.bool.isRequired,
         onNavigationStateChange: PropTypes.func,
         url:                     PropTypes.string,
+        injectedJavaScript:      PropTypes.string,
         ...View.propTypes
     },
     getDefaultProps () {
