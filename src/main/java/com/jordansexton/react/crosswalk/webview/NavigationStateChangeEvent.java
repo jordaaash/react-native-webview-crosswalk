@@ -35,6 +35,17 @@ class NavigationStateChangeEvent extends Event<NavigationStateChangeEvent> {
     }
 
     @Override
+    public boolean canCoalesce () {
+        return false;
+    }
+
+    @Override
+    public short getCoalescingKey () {
+        // All events for a given view can be coalesced.
+        return 0;
+    }
+
+    @Override
     public void dispatch (RCTEventEmitter rctEventEmitter) {
         rctEventEmitter.receiveEvent(getViewTag(), getEventName(), serializeEventData());
     }
