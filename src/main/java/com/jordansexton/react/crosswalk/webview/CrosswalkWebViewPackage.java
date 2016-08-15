@@ -30,6 +30,6 @@ public class CrosswalkWebViewPackage implements ReactPackage {
 
     @Override
     public List<ViewManager> createViewManagers (ReactApplicationContext reactContext) {
-        return Arrays.<ViewManager>asList(new CrosswalkWebViewGroupManager(reactContext.getCurrentActivity()));
+        return Arrays.<ViewManager>asList(new CrosswalkWebViewGroupManager(reactContext));
     }
 }
