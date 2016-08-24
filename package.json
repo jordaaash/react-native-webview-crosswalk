@@ -35,7 +35,7 @@
     },
     "homepage":         "https://github.com/jordansexton/react-native-webview-crosswalk",
     "peerDependencies": {
-        "react":        ">=0.15.2",
+        "react":        ">=15.2.0",
         "react-native": ">=0.29.0"
     },
     "dependencies":     {
