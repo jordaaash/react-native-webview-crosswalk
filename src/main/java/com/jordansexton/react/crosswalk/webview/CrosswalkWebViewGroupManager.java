@@ -3,6 +3,7 @@ package com.jordansexton.react.crosswalk.webview;
 import android.app.Activity;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.common.MapBuilder;
 import com.facebook.react.common.annotations.VisibleForTesting;
 import com.facebook.react.uimanager.ThemedReactContext;
@@ -25,12 +26,12 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
     @VisibleForTesting
     public static final String REACT_CLASS = "CrosswalkWebView";
 
-    private Activity activity;
+    private ReactApplicationContext reactContext;
 
     private static final String BLANK_URL = "about:blank";
 
-    public CrosswalkWebViewGroupManager (Activity _activity) {
-        activity = _activity;
+    public CrosswalkWebViewGroupManager (ReactApplicationContext _reactContext) {
+        reactContext = _reactContext;
     }
 
     @Override
@@ -40,7 +41,8 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
 
     @Override
     public CrosswalkWebView createViewInstance (ThemedReactContext context) {
-        CrosswalkWebView crosswalkWebView = new CrosswalkWebView(context, activity);
+        Activity _activity = reactContext.getCurrentActivity();
+        CrosswalkWebView crosswalkWebView = new CrosswalkWebView(context, _activity);
         context.addLifecycleEventListener(crosswalkWebView);
         return crosswalkWebView;
     }
@@ -54,27 +56,30 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
 
     @ReactProp(name = "source")
     public void setSource(final CrosswalkWebView view, @Nullable ReadableMap source) {
-      if (source != null) {
-        if (source.hasKey("html")) {
-          final String html = source.getString("html");
-          activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run () {
-              view.load(null, html);
-            }
-          });
-          return;
-        }
-        if (source.hasKey("uri")) {
-          final String url = source.getString("uri");
-          activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run () {
-              view.load(url, null);
-            }
-          });
-          return;
-        }
+      Activity _activity = reactContext.getCurrentActivity();
+      if (_activity != null) {
+          if (source != null) {
+              if (source.hasKey("html")) {
+                  final String html = source.getString("html");
+                  _activity.runOnUiThread(new Runnable() {
+                      @Override
+                      public void run () {
+                          view.load(null, html);
+                      }
+                  });
+                  return;
+              }
+              if (source.hasKey("uri")) {
+                  final String url = source.getString("uri");
+                  _activity.runOnUiThread(new Runnable() {
+                      @Override
+                      public void run () {
+                          view.load(url, null);
+                      }
+                  });
+                  return;
+              }
+          }
       }
       setUrl(view, BLANK_URL);
     }
@@ -87,12 +92,15 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
 
     @ReactProp(name = "url")
     public void setUrl (final CrosswalkWebView view, @Nullable final String url) {
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run () {
-                view.load(url, null);
-            }
-        });
+        Activity _activity = reactContext.getCurrentActivity();
+        if (_activity != null) {
+            _activity.runOnUiThread(new Runnable() {
+                @Override
+                public void run () {
+                    view.load(url, null);
+                }
+            });
+        }
     }
 
     @ReactProp(name = "localhost")
