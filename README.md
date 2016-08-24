@@ -7,6 +7,8 @@ Crosswalk's WebView for React Native on Android.
 
 ### Dependencies
 
+* [0.3.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.3.0)+: `react-native >=0.29.0`, `react >= 15.2.0`
+
 * [0.2.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.2.0)+: `react-native >=0.25.0`, `react >= 0.14.5`
 
 * [0.1.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.1.0): `react-native >= 0.19.0`
