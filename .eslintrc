@@ -1,0 +1,162 @@
+{
+    "env":           {
+        "commonjs": 1
+    },
+    "extends":       "eslint:recommended",
+    "globals":       {
+        "console": 1
+    },
+    "plugins":       [ "react" ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": 1,
+            "jsx":                          1
+        },
+        "ecmaVersion":  6,
+        "sourceType":   "module"
+    },
+    "parser":        "babel-eslint",
+    "rules":         {
+        "camelcase":                          2,
+        "comma-spacing":                      [
+            2, {
+                "before": false,
+                "after":  true
+            }
+        ],
+        "constructor-super":                  2,
+        "jsx-quotes":                         [ 2, "prefer-double" ],
+        "key-spacing":                        [
+            2, {
+                "align":       "value",
+                "beforeColon": false,
+                "afterColon":  true,
+                "mode":        "minimum"
+            }
+        ],
+        "new-cap":                            0,
+        "no-console":                         0,
+        "new-parens":                         0,
+        "no-alert":                           1,
+        "no-empty":                           2,
+        "no-ex-assign":                       2,
+        "no-mixed-requires":                  2,
+        "no-multi-spaces":                    [
+            2, {
+                "exceptions": {
+                    "AssignmentExpression": true,
+                    "ImportDeclaration":    true,
+                    "VariableDeclarator":   true
+                }
+            }
+        ],
+        "no-new-func":                        0,
+        "no-process-exit":                    0,
+        "no-shadow":                          0,
+        "no-undef":                           2,
+        "no-underscore-dangle":               0,
+        "no-unused-vars":                     [
+            2, {
+                "vars": "all",
+                "args": "none"
+            }
+        ],
+        "no-wrap-func":                       0,
+        "one-var":                            [
+            2, {
+                "uninitialized": "always",
+                "initialized":   "never"
+            }
+        ],
+        "quotes":                             [ 2, "single", "avoid-escape" ],
+        "react/display-name":                 [
+            2, {
+                "ignoreTranspilerName": false
+            }
+        ],
+        "react/jsx-boolean-value":            [ 2, "always" ],
+        "react/jsx-closing-bracket-location": [ 2, "after-props" ],
+        "react/jsx-indent-props":             [ 2, 4 ],
+        "react/jsx-max-props-per-line":       [
+            1, {
+                "maximum": 1
+            }
+        ],
+        "react/jsx-no-duplicate-props":       [
+            2, {
+                "ignoreCase": true
+            }
+        ],
+        "react/jsx-no-undef":                 2,
+        "react/jsx-sort-props":               [
+            2, {
+                "ignoreCase": true
+            }
+        ],
+        "react/jsx-uses-react":               2,
+        "react/jsx-uses-vars":                2,
+        "react/jsx-wrap-multilines":          2,
+        "react/no-danger":                    2,
+        "react/no-did-mount-set-state":       2,
+        "react/no-did-update-set-state":      2,
+        "react/no-multi-comp":                2,
+        "react/no-unknown-property":          2,
+        "react/prop-types":                   [
+            2, {
+                "ignore": [ "children", "className" ]
+            }
+        ],
+        "react/react-in-jsx-scope":           2,
+        "react/self-closing-comp":            2,
+        "react/sort-comp":                    [
+            2, {
+                "order":  [
+                    "initialization",
+                    "rendering",
+                    "lifecycle",
+                    "events",
+                    "everything-else"
+                ],
+                "groups": {
+                    "initialization": [
+                        "displayName",
+                        "mixins",
+                        "statics",
+                        "propTypes",
+                        "contextTypes",
+                        "childContextTypes",
+                        "getChildContext",
+                        "defaultProps",
+                        "constructor",
+                        "getDefaultProps",
+                        "getInitialState",
+                        "state"
+                    ],
+                    "rendering":      [
+                        "render",
+                        "/^render[A-Z0-9]/",
+                        "/^get[A-Z0-9]/",
+                        "/^format[A-Z0-9]/"
+                    ],
+                    "lifecycle":      [
+                        "componentWillMount",
+                        "componentDidMount",
+                        "componentWillReceiveProps",
+                        "shouldComponentUpdate",
+                        "componentWillUpdate",
+                        "componentDidUpdate",
+                        "componentWillUnmount"
+                    ],
+                    "events":         [
+                        "/^handle[A-Z0-9]/"
+                    ]
+                }
+            }
+        ],
+        "react/sort-prop-types":              [
+            2, {
+                "ignoreCase": true
+            }
+        ]
+    }
+}
