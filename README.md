@@ -61,7 +61,7 @@ dependencies {
   compile project(':CrosswalkWebView')                             // <--- add this line
 }
 ```
-
+* [0.2.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.2.0)+:
 * Register package in MainActivity.java
 
 ```java
@@ -75,6 +75,28 @@ public class MainActivity extends ReactActivity {
     return Arrays.<ReactPackage>asList(
         new MainReactPackage(),
         new CrosswalkWebViewPackage(this)    // <--- add this line
+    );
+  }
+
+  ......
+
+}
+```
+
+* [0.3.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.3.0)+:
+* Register package in MainApplication.java
+
+```java
+import com.jordansexton.react.crosswalk.webview.CrosswalkWebViewPackage;    // <--- add this line
+
+public class MainApplication extends Application implements ReactApplication {
+  ......
+
+  @Override
+  protected List<ReactPackage> getPackages() {
+    return Arrays.<ReactPackage>asList(
+        new MainReactPackage(),
+        new CrosswalkWebViewPackage()    // <--- add this line
     );
   }
 
