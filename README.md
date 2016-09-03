@@ -62,6 +62,7 @@ dependencies {
 }
 ```
 * Register package [0.2.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.2.0)+:
+
 In MainActivity.java
 
 ```java
@@ -84,6 +85,7 @@ public class MainActivity extends ReactActivity {
 ```
 
 * Register package [0.3.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.3.0)+:
+
 In MainApplication.java
 
 ```java
