@@ -61,8 +61,8 @@ dependencies {
   compile project(':CrosswalkWebView')                             // <--- add this line
 }
 ```
-* [0.2.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.2.0)+:
-* Register package in MainActivity.java
+* Register package [0.2.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.2.0)+:
+In MainActivity.java
 
 ```java
 import com.jordansexton.react.crosswalk.webview.CrosswalkWebViewPackage;    // <--- add this line
@@ -83,8 +83,8 @@ public class MainActivity extends ReactActivity {
 }
 ```
 
-* [0.3.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.3.0)+:
-* Register package in MainApplication.java
+* Register package [0.3.0](https://github.com/jordansexton/react-native-webview-crosswalk/releases/tag/v0.3.0)+:
+In MainApplication.java
 
 ```java
 import com.jordansexton.react.crosswalk.webview.CrosswalkWebViewPackage;    // <--- add this line
