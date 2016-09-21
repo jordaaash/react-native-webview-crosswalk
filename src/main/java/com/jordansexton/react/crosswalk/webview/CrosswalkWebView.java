@@ -5,13 +5,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.SystemClock;
 import android.text.TextUtils;
+import android.webkit.ValueCallback;
+
 import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
 import org.xwalk.core.XWalkNavigationHistory;
 import org.xwalk.core.XWalkResourceClient;
+import org.xwalk.core.XWalkUIClient;
 import org.xwalk.core.XWalkView;
+
 import javax.annotation.Nullable;
 
 class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
@@ -21,10 +25,12 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
     private final EventDispatcher eventDispatcher;
 
     private final ResourceClient resourceClient;
+    private final UIClient uiClient;
 
     private @Nullable String injectedJavaScript;
 
     private boolean isJavaScriptInjected;
+    private boolean isChoosingFile;
 
     public CrosswalkWebView (ReactContext reactContext, Activity _activity) {
         super(reactContext, _activity);
@@ -32,8 +38,10 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
         activity = _activity;
         eventDispatcher = reactContext.getNativeModule(UIManagerModule.class).getEventDispatcher();
         resourceClient = new ResourceClient(this);
+        uiClient = new UIClient(this);
 
         this.setResourceClient(resourceClient);
+        this.setUIClient(uiClient);
     }
 
     public Boolean getLocalhost () {
@@ -53,7 +61,9 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
     @Override
     public void onHostPause() {
         pauseTimers();
-        onHide();
+        if (!isChoosingFile) {
+            onHide();
+        }
     }
 
     @Override
@@ -61,8 +71,17 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
         onDestroy();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (isChoosingFile) {
+            isChoosingFile = false;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
     public void load (String url, String content) {
         isJavaScriptInjected = false;
+        isChoosingFile = false;
         super.load(url, content);
     }
 
@@ -172,6 +191,18 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
         private void overrideUri (Uri uri) {
             Intent action = new Intent(Intent.ACTION_VIEW, uri);
             activity.startActivity(action);
+        }
+    }
+
+    protected class UIClient extends XWalkUIClient {
+        public UIClient(XWalkView view) {
+            super(view);
+        }
+
+        @Override
+        public void openFileChooser (XWalkView view, ValueCallback<Uri> uploadFile, String acceptType, String capture) {
+            isChoosingFile = true;
+            super.openFileChooser(view, uploadFile, acceptType, capture);
         }
     }
 }
