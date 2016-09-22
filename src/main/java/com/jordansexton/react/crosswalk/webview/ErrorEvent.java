@@ -16,7 +16,7 @@ class ErrorEvent extends Event<ErrorEvent> {
     private final String url;
 
     protected ErrorEvent (int viewTag, long timestampMs, int _errorNumber, String _errorMessage, String _url) {
-        super(viewTag, timestampMs);
+        super(viewTag);
 
         errorNumber = _errorNumber;
         errorMessage = _errorMessage;
