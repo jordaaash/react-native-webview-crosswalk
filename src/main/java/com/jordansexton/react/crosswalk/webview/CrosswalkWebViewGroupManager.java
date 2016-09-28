@@ -1,6 +1,9 @@
 package com.jordansexton.react.crosswalk.webview;
 
 import android.app.Activity;
+import android.content.Intent;
+
+import com.facebook.react.bridge.BaseActivityEventListener;
 import com.facebook.react.bridge.ReadableArray;
 import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -44,6 +47,7 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
         Activity _activity = reactContext.getCurrentActivity();
         CrosswalkWebView crosswalkWebView = new CrosswalkWebView(context, _activity);
         context.addLifecycleEventListener(crosswalkWebView);
+        reactContext.addActivityEventListener(new XWalkActivityEventListener(crosswalkWebView));
         return crosswalkWebView;
     }
 
@@ -142,5 +146,18 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
             ErrorEvent.EVENT_NAME,
             MapBuilder.of("registrationName", "onError")
         );
+    }
+
+    protected class XWalkActivityEventListener extends BaseActivityEventListener {
+        private CrosswalkWebView crosswalkWebView;
+
+        public XWalkActivityEventListener(CrosswalkWebView _crosswalkWebView) {
+            crosswalkWebView = _crosswalkWebView;
+        }
+
+        @Override
+        public void onActivityResult(int requestCode, int resultCode, Intent data) {
+            crosswalkWebView.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
