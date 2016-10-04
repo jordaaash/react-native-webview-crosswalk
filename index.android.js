@@ -52,7 +52,7 @@ var CrosswalkWebView = React.createClass({
         );
     },
     getWebViewHandle () {
-        return React.findNodeHandle(this.refs[WEBVIEW_REF]);
+        return ReactNative.findNodeHandle(this.refs[WEBVIEW_REF]);
     },
     onNavigationStateChange (event) {
         var { onNavigationStateChange } = this.props;
@@ -69,21 +69,21 @@ var CrosswalkWebView = React.createClass({
     goBack () {
         UIManager.dispatchViewManagerCommand(
             this.getWebViewHandle(),
-            UIManager.NativeCrosswalkWebView.Commands.goBack,
+            UIManager.CrosswalkWebView.Commands.goBack,
             null
         );
     },
     goForward () {
         UIManager.dispatchViewManagerCommand(
             this.getWebViewHandle(),
-            UIManager.NativeCrosswalkWebView.Commands.goForward,
+            UIManager.CrosswalkWebView.Commands.goForward,
             null
         );
     },
     reload () {
         UIManager.dispatchViewManagerCommand(
             this.getWebViewHandle(),
-            UIManager.NativeCrosswalkWebView.Commands.reload,
+            UIManager.CrosswalkWebView.Commands.reload,
             null
         );
     }
