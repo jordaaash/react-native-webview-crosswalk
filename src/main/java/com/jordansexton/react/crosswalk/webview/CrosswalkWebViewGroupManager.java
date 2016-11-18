@@ -156,6 +156,11 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
         }
 
         @Override
+        public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+            crosswalkWebView.onActivityResult(requestCode, resultCode, data);
+        }
+
+        @Override
         public void onActivityResult(int requestCode, int resultCode, Intent data) {
             crosswalkWebView.onActivityResult(requestCode, resultCode, data);
         }
