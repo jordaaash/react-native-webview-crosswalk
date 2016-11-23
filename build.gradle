@@ -23,5 +23,5 @@ repositories {
 
 dependencies {
     compile "com.facebook.react:react-native:+"
-    compile (name: "xwalk_core_library-18.48.477.13", ext: "aar")
+    compile (name: "xwalk_core_library-22.52.561.4", ext: "aar")
 }

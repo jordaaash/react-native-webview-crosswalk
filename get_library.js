@@ -1,6 +1,6 @@
 'use strict';
 
-var version = '18.48.477.13';
+var version = '22.52.561.4';
 var beta    = '';
 
 var exec = require('child_process').exec;
@@ -8,36 +8,14 @@ var fs   = require('fs');
 var wget = require('node-wget');
 
 function prepareLibrary (filePath) {
-    exec('unzip -j ' + filePath + ' classes.jar', [], (error, stdout, stderr) => {
-        if (error) {
-            console.log(error);
-        }
-        else {
-            exec('zip -d classes.jar javax\\*', [], (error, stdout, stderr) => {
-                if (error) {
-                    console.log(error);
-                }
-                else {
-                    exec('zip -ro ' + filePath + ' classes.jar', [], (error, stdout, stderr) => {
-                        if (error) {
-                            console.log(error);
-                        }
-                        else {
-                            fs.unlinkSync('classes.jar');
-                            try {
-                                fs.unlinkSync('./libs/' + filePath);
-                            }
-                            catch (e) {
-                                console.log('No previous file');
-                            }
-                            fs.renameSync(filePath, './libs/' + filePath);
-                            console.log('Library baked');
-                        }
-                    });
-                }
-            });
-        }
-    });
+    try {
+        fs.unlinkSync('./libs/' + filePath);
+    }
+    catch (e) {
+        console.log('No previous file');
+    }
+    fs.renameSync(filePath, './libs/' + filePath);
+    console.log('Library baked');
 }
 
 function handleDownloaded (error, data) {
