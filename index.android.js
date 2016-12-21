@@ -118,7 +118,9 @@ var CrosswalkWebView = React.createClass({
     },
     onNavigationStateChange (event) {
         if (event.nativeEvent && !event.nativeEvent.loading) {
-          this._onLoadingFinish(event);
+          if (this.state.viewState !== WebViewState.ERROR) {
+            this._onLoadingFinish(event);
+          }
         }
 
         var { onNavigationStateChange } = this.props;
