@@ -19,6 +19,7 @@ var CrosswalkWebView = React.createClass({
         injectedJavaScript:      PropTypes.string,
         localhost:               PropTypes.bool.isRequired,
         onError:                 PropTypes.func,
+        onMessage:               PropTypes.func,
         onNavigationStateChange: PropTypes.func,
         onProgress:              PropTypes.func,
         source:                  PropTypes.oneOfType([
@@ -44,6 +45,7 @@ var CrosswalkWebView = React.createClass({
             source.uri = this.props.url;
         }
         var nativeProps = Object.assign({}, this.props, {
+            messagingEnabled: typeof this.props.onMessage === 'function'
             onCrosswalkWebViewNavigationStateChange: this.onNavigationStateChange,
             onCrosswalkWebViewError: this.onError,
             onCrosswalkWebViewProgress: this.onProgress
@@ -97,9 +99,24 @@ var CrosswalkWebView = React.createClass({
             UIManager.CrosswalkWebView.Commands.reload,
             null
         );
+    },
+    postMessage (data) {
+        UIManager.dispatchViewManagerCommand(
+            this.getWebViewHandle(),
+            UIManager.CrosswalkWebView.Commands.postMessage,
+            [String(data)]
+        );
+    },
+    onMessage (event) {
+        var {onMessage} = this.props;
+        onMessage && onMessage(event);
     }
 });
 
-var NativeCrosswalkWebView = requireNativeComponent('CrosswalkWebView', CrosswalkWebView);
+var NativeCrosswalkWebView = requireNativeComponent('CrosswalkWebView', CrosswalkWebView, {
+    nativeOnly: {
+        messagingEnabled: PropTypes.bool,
+    },
+});
 
 export default CrosswalkWebView;

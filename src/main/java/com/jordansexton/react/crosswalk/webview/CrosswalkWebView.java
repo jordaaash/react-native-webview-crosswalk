@@ -11,10 +11,13 @@ import com.facebook.react.bridge.LifecycleEventListener;
 import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.uimanager.UIManagerModule;
 import com.facebook.react.uimanager.events.EventDispatcher;
+import org.xwalk.core.JavascriptInterface;
 import org.xwalk.core.XWalkNavigationHistory;
 import org.xwalk.core.XWalkResourceClient;
 import org.xwalk.core.XWalkUIClient;
 import org.xwalk.core.XWalkView;
+
+import com.facebook.react.views.webview.events.TopMessageEvent;
 
 import javax.annotation.Nullable;
 
@@ -31,6 +34,22 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
 
     private boolean isJavaScriptInjected;
     private boolean isChoosingFile;
+    private boolean messagingEnabled = false;
+
+    private final String BRIDGE_NAME = "__REACT_CROSSWALK_VIEW_BRIDGE";
+
+    private class CrosswalkWebViewBridge {
+        CrosswalkWebView mContext;
+
+        CrosswalkWebViewBridge(CrosswalkWebView c) {
+            mContext = c;
+        }
+
+        @JavascriptInterface
+        public void postMessage(String message) {
+            mContext.onMessage(message);
+        }
+    }
 
     public CrosswalkWebView (ReactContext reactContext, Activity _activity) {
         super(reactContext, _activity);
@@ -99,6 +118,34 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
         }
     }
 
+    public void setMessagingEnabled(boolean enabled) {
+        if (messagingEnabled == enabled) {
+            return;
+        }
+
+        messagingEnabled = enabled;
+        if (enabled) {
+            addJavascriptInterface(new CrosswalkWebViewBridge(this), BRIDGE_NAME);
+            linkBridge();
+        } else {
+            removeJavascriptInterface(BRIDGE_NAME);
+        }
+    }
+
+    public void linkBridge() {
+        if (messagingEnabled) {
+            this.evaluateJavascript(
+                "window.originalPostMessage = window.postMessage," +
+                "window.postMessage = function(data) {" +
+                BRIDGE_NAME + ".postMessage(String(data));" +
+            "}", null);
+        }
+    }
+
+    public void onMessage(String message) {
+        eventDispatcher.dispatchEvent(new TopMessageEvent(this.getId(), message));
+    }
+
     protected class ResourceClient extends XWalkResourceClient {
 
         private Boolean localhost = false;
@@ -117,6 +164,7 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
 
         @Override
         public void onLoadFinished (XWalkView view, String url) {
+            ((CrosswalkWebView) view).linkBridge();
             ((CrosswalkWebView) view).callInjectedJavaScript();
 
             XWalkNavigationHistory navigationHistory = view.getNavigationHistory();
