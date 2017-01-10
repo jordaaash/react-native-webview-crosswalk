@@ -164,6 +164,17 @@ class CrosswalkWebView extends XWalkView implements LifecycleEventListener {
         }
 
         @Override
+        public void onProgressChanged (XWalkView view, int progressInPercent) {
+            eventDispatcher.dispatchEvent(
+                new ProgressEvent(
+                    getId(),
+                    SystemClock.uptimeMillis(),
+                    progressInPercent
+                )
+            );
+        }
+
+        @Override
         public boolean shouldOverrideUrlLoading (XWalkView view, String url) {
             Uri uri = Uri.parse(url);
             if (uri.getScheme().equals(CrosswalkWebViewManager.JSNavigationScheme)) {
