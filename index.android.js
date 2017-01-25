@@ -20,6 +20,7 @@ var CrosswalkWebView = React.createClass({
         localhost:               PropTypes.bool.isRequired,
         onError:                 PropTypes.func,
         onNavigationStateChange: PropTypes.func,
+        onProgress:              PropTypes.func,
         source:                  PropTypes.oneOfType([
             PropTypes.shape({
                 uri: PropTypes.string,  // URI to load in WebView
@@ -44,7 +45,8 @@ var CrosswalkWebView = React.createClass({
         }
         var nativeProps = Object.assign({}, this.props, {
             onCrosswalkWebViewNavigationStateChange: this.onNavigationStateChange,
-            onCrosswalkWebViewError: this.onError
+            onCrosswalkWebViewError: this.onError,
+            onCrosswalkWebViewProgress: this.onProgress
         });
         return (
             <NativeCrosswalkWebView
@@ -67,6 +69,12 @@ var CrosswalkWebView = React.createClass({
         var { onError } = this.props;
         if (onError) {
             onError(event.nativeEvent);
+        }
+    },
+    onProgress (event) {
+        var { onProgress } = this.props;
+        if (onProgress) {
+            onProgress(event.nativeEvent.progress / 100);
         }
     },
     goBack () {

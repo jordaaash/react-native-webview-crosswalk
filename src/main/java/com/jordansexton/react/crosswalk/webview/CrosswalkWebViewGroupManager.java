@@ -144,7 +144,9 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
             NavigationStateChangeEvent.EVENT_NAME,
             MapBuilder.of("registrationName", "onCrosswalkWebViewNavigationStateChange"),
             ErrorEvent.EVENT_NAME,
-            MapBuilder.of("registrationName", "onCrosswalkWebViewError")
+            MapBuilder.of("registrationName", "onCrosswalkWebViewError"),
+            ProgressEvent.EVENT_NAME,
+            MapBuilder.of("registrationName", "onCrosswalkWebViewProgress")
         );
     }
 
