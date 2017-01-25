@@ -15,6 +15,11 @@ import com.facebook.react.uimanager.annotations.ReactProp;
 import org.xwalk.core.XWalkNavigationHistory;
 import org.xwalk.core.XWalkView;
 
+import org.json.JSONObject;
+import org.json.JSONException;
+
+import com.facebook.react.views.webview.events.TopMessageEvent;
+
 import javax.annotation.Nullable;
 import java.util.Map;
 
@@ -25,6 +30,8 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
     public static final int GO_FORWARD = 2;
 
     public static final int RELOAD = 3;
+
+    public static final int POST_MESSAGE = 4;
 
     @VisibleForTesting
     public static final String REACT_CLASS = "CrosswalkWebView";
@@ -94,6 +101,11 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
         ((CrosswalkWebView) view).setInjectedJavaScript(injectedJavaScript);
     }
 
+    @ReactProp(name = "messagingEnabled")
+    public void setMessagingEnabled(XWalkView view, boolean enabled) {
+        ((CrosswalkWebView) view).setMessagingEnabled(enabled);
+    }
+
     @ReactProp(name = "url")
     public void setUrl (final CrosswalkWebView view, @Nullable final String url) {
         Activity _activity = reactContext.getCurrentActivity();
@@ -119,7 +131,8 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
         return MapBuilder.of(
             "goBack", GO_BACK,
             "goForward", GO_FORWARD,
-            "reload", RELOAD
+            "reload", RELOAD,
+            "postMessage", POST_MESSAGE
         );
     }
 
@@ -135,6 +148,15 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
             case RELOAD:
                 view.reload(XWalkView.RELOAD_NORMAL);
                 break;
+            case POST_MESSAGE:
+                try {
+                    JSONObject eventInitDict = new JSONObject();
+                    eventInitDict.put("data", args.getString(0));
+                    view.evaluateJavascript("document.dispatchEvent(new MessageEvent('message', " + eventInitDict.toString() + "))", null);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+                break;
         }
     }
 
@@ -146,7 +168,9 @@ public class CrosswalkWebViewGroupManager extends ViewGroupManager<CrosswalkWebV
             ErrorEvent.EVENT_NAME,
             MapBuilder.of("registrationName", "onCrosswalkWebViewError"),
             ProgressEvent.EVENT_NAME,
-            MapBuilder.of("registrationName", "onCrosswalkWebViewProgress")
+            MapBuilder.of("registrationName", "onCrosswalkWebViewProgress"),
+            TopMessageEvent.EVENT_NAME,
+            MapBuilder.of("registrationName", "onMessage")
         );
     }
 
