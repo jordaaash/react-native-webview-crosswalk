@@ -45,7 +45,7 @@ var CrosswalkWebView = React.createClass({
             source.uri = this.props.url;
         }
         var nativeProps = Object.assign({}, this.props, {
-            messagingEnabled: typeof this.props.onMessage === 'function'
+            messagingEnabled: typeof this.props.onMessage === 'function',
             onCrosswalkWebViewNavigationStateChange: this.onNavigationStateChange,
             onCrosswalkWebViewError: this.onError,
             onCrosswalkWebViewProgress: this.onProgress
